@@ -119,4 +119,60 @@ class DoublyLinkedList<Char> {
         return newList
     }
 
+    fun findFirst(element: Char): Int {
+        var currNode = head
+        var index = 0
+        while (currNode != null) {
+            if (currNode.data == element) {
+                return index
+            }
+            currNode = currNode.next
+            index++
+        }
+        return -1
+    }
+
+    fun findLast(element: Char): Int {
+        var currNode = tail
+        var index = size - 1
+        while (currNode != null) {
+            if (currNode.data == element) {
+                return index
+            }
+            currNode = currNode.prev
+            index--
+        }
+        return -1
+    }
+
+    fun clear() {
+        head = null
+        tail = null
+        size = 0
+    }
+
+    fun extend(other: DoublyLinkedList<Char>) {
+        var currNode = other.head
+        var index = 0
+        while (currNode != null) {
+            append(currNode.data)
+            currNode = currNode.next
+            index++
+        }
+    }
+
+    fun reverse() {
+        var temp: Node<Char>? = null
+        var currNode = head
+        while (currNode != null) {
+            temp = currNode.prev
+            currNode.prev = currNode.next
+            currNode.next = temp
+            currNode = currNode.prev
+        }
+        if (temp != null) {
+            head = temp.prev
+        }
+    }
+
 }
