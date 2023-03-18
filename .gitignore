@@ -1,0 +1,15 @@
+# Ignore Gradle build output
+build/
+
+# Ignore IntelliJ IDEA project files
+.idea/
+
+# Ignore system-specific files
+*.iml
+*.ipr
+*.iws
+
+# Ignore Eclipse project files
+.classpath
+.project
+.settings/
