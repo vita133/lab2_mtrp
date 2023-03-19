@@ -1,3 +1,4 @@
+package main.kotlin
 class DoublyLinkedList<Char> {
 
     private class Node<Char>(var data: Char, var prev: Node<Char>? = null, var next: Node<Char>? = null)
@@ -51,8 +52,10 @@ class DoublyLinkedList<Char> {
         size++
     }
 
-    fun delete(index: Int) {
-        if (size == 0 || index < 0 || index >= size) return
+    fun delete(index: Int) : Char? {
+        if (size == 0 || index < 0 || index >= size){
+            throw IndexOutOfBoundsException("Invalid index: $index")
+        }
         var node = tail
         var currElement = size - 1
         while (currElement >= index) {
@@ -66,11 +69,12 @@ class DoublyLinkedList<Char> {
                     tail = node?.prev
                 }
                 size--
-                return
+                return node?.data
             }
             node = node?.prev
             currElement--
         }
+        throw IndexOutOfBoundsException("Element not found at index: $index")
     }
 
     fun deleteAll(element: Char) {
@@ -161,18 +165,14 @@ class DoublyLinkedList<Char> {
         }
     }
 
-    fun reverse() {
-        var temp: Node<Char>? = null
-        var currNode = head
+    fun reverse() : DoublyLinkedList<Char> {
+        val reversedList = DoublyLinkedList<Char>()
+        var currNode = tail
         while (currNode != null) {
-            temp = currNode.prev
-            currNode.prev = currNode.next
-            currNode.next = temp
+            reversedList.append(currNode.data)
             currNode = currNode.prev
         }
-        if (temp != null) {
-            head = temp.prev
-        }
+        return reversedList
     }
 
 }
