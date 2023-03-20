@@ -40,7 +40,7 @@ class DoublyLinkedList<Char> {
             size++
             return
         }
-        var currElement = 0
+        var currElement = 1 // break test
         var currNode = head
         while (currElement < index) {
             currNode = currNode?.next
