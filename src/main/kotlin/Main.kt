@@ -1,178 +1,67 @@
 package main.kotlin
+
 class DoublyLinkedList<Char> {
 
-    private class Node<Char>(var data: Char, var prev: Node<Char>? = null, var next: Node<Char>? = null)
-
-    private var head: Node<Char>? = null
-    private var tail: Node<Char>? = null
-    private var size = 0
+    private val list = mutableListOf<Char>()
 
     fun length(): Int {
-        return size
+        return list.size
     }
 
     fun append(element: Char) {
-        val newNode = Node(element)
-        if (tail == null) {
-            head = newNode
-            tail = newNode
-        } else {
-            newNode.prev = tail
-            tail?.next = newNode
-            tail = newNode
-        }
-        size++
+        list.add(element)
     }
 
     fun insert(element: Char, index: Int) {
-        if (index < 0 || index > size) {
+        if (index < 0 || index > list.size) {
             throw IndexOutOfBoundsException("Invalid index: $index")
         }
-        if (index == size) {
-            append(element)
-            return
-        }
-        if (index == 0) {
-            val h = head
-            val newNode = Node<Char>(element, null, h)
-            head = newNode
-            h?.prev = newNode
-            size++
-            return
-        }
-        var currElement = 1 // break test
-        var currNode = head
-        while (currElement < index) {
-            currNode = currNode?.next
-            currElement++
-        }
-        val newNode = Node(element, currNode?.prev, currNode)
-        currNode?.prev?.next = newNode
-        currNode?.prev = newNode
-        size++
+        list.add(index, element)
     }
 
-    fun delete(index: Int) : Char? {
-        if (size == 0 || index < 0 || index >= size){
+    fun delete(index: Int): Char? {
+        if (list.isEmpty() || index < 0 || index >= list.size) {
             throw IndexOutOfBoundsException("Invalid index: $index")
         }
-        var node = tail
-        var currElement = size - 1
-        while (currElement >= index) {
-            if (currElement == index) {
-                node?.prev?.next = node?.next
-                node?.next?.prev = node?.prev
-                if (node == head) {
-                    head = node?.next
-                }
-                if (node == tail) {
-                    tail = node?.prev
-                }
-                size--
-                return node?.data
-            }
-            node = node?.prev
-            currElement--
-        }
-        throw IndexOutOfBoundsException("Element not found at index: $index")
+        return list.removeAt(index)
     }
 
     fun deleteAll(element: Char) {
-        var currNode = head
-        while (currNode != null) {
-            if (currNode.data == element) {
-                currNode.prev?.next = currNode.next
-                currNode.next?.prev = currNode.prev
-                if (currNode == head) {
-                    head = currNode.next
-                }
-                if (currNode == tail) {
-                    tail = currNode.prev
-                }
-                size--
-            }
-            currNode = currNode.next
-        }
+        list.removeAll { it == element }
     }
 
-    fun get(index: Int) : Char? {
-        if (size == 0 || index < 0 || index >= size){
+    fun get(index: Int): Char? {
+        if (list.isEmpty() || index < 0 || index >= list.size) {
             throw IndexOutOfBoundsException("Invalid index: $index")
         }
-        var node = tail
-        var currElement = size - 1
-        while (currElement >= index) {
-            if (currElement == index) {
-                if (node != null) {
-                    return node.data
-                }
-            }
-            node = node?.prev
-            currElement--
-        }
-        throw IndexOutOfBoundsException("Element not found at index: $index")
+        return list[index]
     }
 
     fun clone(): DoublyLinkedList<Char> {
         val newList = DoublyLinkedList<Char>()
-        var node = head
-        while (node != null) {
-            newList.append(node.data)
-            node = node.next
-        }
+        newList.list.addAll(list)
         return newList
     }
 
     fun findFirst(element: Char): Int {
-        var currNode = head
-        var index = 0
-        while (currNode != null) {
-            if (currNode.data == element) {
-                return index
-            }
-            currNode = currNode.next
-            index++
-        }
-        return -1
+        return list.indexOf(element)
     }
 
     fun findLast(element: Char): Int {
-        var currNode = tail
-        var index = size - 1
-        while (currNode != null) {
-            if (currNode.data == element) {
-                return index
-            }
-            currNode = currNode.prev
-            index--
-        }
-        return -1
+        return list.lastIndexOf(element)
     }
 
     fun clear() {
-        head = null
-        tail = null
-        size = 0
+        list.clear()
     }
 
     fun extend(other: DoublyLinkedList<Char>) {
-        var currNode = other.head
-        var index = 0
-        while (currNode != null) {
-            append(currNode.data)
-            currNode = currNode.next
-            index++
-        }
+        list.addAll(other.list)
     }
 
-    fun reverse() : DoublyLinkedList<Char> {
+    fun reverse(): DoublyLinkedList<Char> {
         val reversedList = DoublyLinkedList<Char>()
-        var currNode = tail
-        while (currNode != null) {
-            reversedList.append(currNode.data)
-            currNode = currNode.prev
-        }
+        reversedList.list.addAll(list.reversed())
         return reversedList
     }
-
 }
